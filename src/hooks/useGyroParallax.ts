@@ -19,8 +19,8 @@ import { MotionValue } from 'framer-motion';
  * These limits prevent wild jumps when the phone crosses gimbal lock
  * angles or when the user rotates their phone dramatically.
  */
-const GAMMA_CLAMP = 25; // left-right tilt, degrees
-const BETA_CLAMP = 15;  // front-back tilt, degrees
+const GAMMA_CLAMP = 19.2; // left-right tilt, degrees (Snappier: 25 / 1.3)
+const BETA_CLAMP = 11.5;  // front-back tilt, degrees (Snappier: 15 / 1.3)
 
 /**
  * Exponential moving average (EMA) smoothing factor.
@@ -28,12 +28,10 @@ const BETA_CLAMP = 15;  // front-back tilt, degrees
  * Lower values = smoother but laggier response.
  * Higher values = more responsive but may show sensor jitter.
  *
- * 0.10 provides aggressive smoothing that removes virtually all
- * gyroscope noise while keeping responsiveness acceptable.
- * This is the first smoothing layer — the spring in useUnifiedParallax
- * adds a second layer for the luxury feel.
+ * 0.15 provides a more direct, "harder" response while still
+ * filtering high-frequency sensor noise.
  */
-const SMOOTH_ALPHA = 0.10;
+const SMOOTH_ALPHA = 0.15;
 
 // ============================================================================
 // TYPES

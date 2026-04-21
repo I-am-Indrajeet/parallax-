@@ -6,7 +6,6 @@ import { motion, AnimatePresence, useTransform, MotionValue } from 'framer-motio
 import { ProductConfig, Asset, DepthLayer } from '@/types/product';
 import { useUnifiedParallax } from '@/hooks/useUnifiedParallax';
 import AnimatedBackground from './AnimatedBackground';
-import MotionPermissionOverlay from './MotionPermissionOverlay';
 
 // ============================================================================
 // CONFIGURATION
@@ -30,10 +29,10 @@ const SHOW_DEBUG = false;
  * spot the parallax, it's working. If it's dramatic, it's too much.
  */
 const DEPTH_DESKTOP: Record<DepthLayer, { x: number; y: number; rotate: number }> = {
-  background: { x: 5, y: 3, rotate: 0 },
-  mid:        { x: 12, y: 8, rotate: 0 },
-  foreground: { x: 18, y: 14, rotate: 0 },
-  hero:       { x: 8, y: 5, rotate: 1.5 },
+  background: { x: 6.5, y: 3.9, rotate: 0 },
+  mid:        { x: 15.6, y: 10.4, rotate: 0 },
+  foreground: { x: 23.4, y: 18.2, rotate: 0 },
+  hero:       { x: 10.4, y: 6.5, rotate: 1.95 },
 };
 
 /**
@@ -46,10 +45,10 @@ const DEPTH_DESKTOP: Record<DepthLayer, { x: number; y: number; rotate: number }
  * 4. Mid-range devices need headroom for smooth 60fps
  */
 const DEPTH_MOBILE: Record<DepthLayer, { x: number; y: number; rotate: number }> = {
-  background: { x: 3, y: 2, rotate: 0 },
-  mid:        { x: 7, y: 5, rotate: 0 },
-  foreground: { x: 11, y: 8, rotate: 0 },
-  hero:       { x: 5, y: 3, rotate: 1.0 },
+  background: { x: 3.9, y: 2.6, rotate: 0 },
+  mid:        { x: 9.1, y: 6.5, rotate: 0 },
+  foreground: { x: 14.3, y: 10.4, rotate: 0 },
+  hero:       { x: 6.5, y: 3.9, rotate: 1.3 },
 };
 
 /**
@@ -284,9 +283,6 @@ export default function HeroSection({ product }: HeroSectionProps) {
     [product.assets]
   );
 
-  // Show iOS permission overlay only when gyro needs user approval
-  const showMotionPrompt = !isDesktop && gyroStatus === 'prompt';
-
   return (
     <section
       ref={containerRef as React.RefObject<HTMLElement>}
@@ -328,12 +324,6 @@ export default function HeroSection({ product }: HeroSectionProps) {
           </motion.div>
         </AnimatePresence>
       </div>
-
-      {/* iOS gyroscope permission overlay — appears only when needed */}
-      <MotionPermissionOverlay
-        visible={showMotionPrompt}
-        onRequest={requestGyroPermission}
-      />
     </section>
   );
 }

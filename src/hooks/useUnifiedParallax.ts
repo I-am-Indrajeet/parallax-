@@ -139,6 +139,25 @@ export function useUnifiedParallax(): UnifiedParallaxResult {
     gyroEnabled
   );
 
+  // ── Auto-enable motion on first interaction (iOS) ──
+  useEffect(() => {
+    if (gyroStatus !== 'prompt' || !gyroEnabled) return;
+
+    const handleFirstInteraction = async () => {
+      // Trigger the permission request on the user gesture
+      await requestPermission();
+      // Cleanup happens automatically as gyroStatus will change from 'prompt'
+    };
+
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+    window.addEventListener('mousedown', handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('mousedown', handleFirstInteraction);
+    };
+  }, [gyroStatus, gyroEnabled, requestPermission]);
+
   // ── Determine current motion mode for UI feedback ──
   let motionMode: MotionMode = 'idle';
   if (!motionAllowed) {
